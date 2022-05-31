@@ -5,12 +5,10 @@ import "hardhat/console.sol";
 import "./libraries/Ownable.sol";
 import "./libraries/ERC721Enumerable.sol";
 import "./libraries/ERC721.sol";
-import "./libraries/WriteBuffer.sol";
 import "./libraries/Strings.sol";
 import "./libraries/Base64.sol";
 
 contract ThreeDX is Ownable, ERC721, ERC721Enumerable {
-    using WriteBuffer for *;
     using Strings for *;
     using Base64 for *;
 
@@ -18,11 +16,17 @@ contract ThreeDX is Ownable, ERC721, ERC721Enumerable {
 
     mapping(uint256 => string) private _images; //Ipfs address
 
+    mapping(uint256 => uint256) private _royaltys; //_royalty
+
     constructor() ERC721("ThreeDX", "3DX") ERC721Enumerable() Ownable() {}
 
-    function mint(string calldata image) public returns (uint256) {
+    function mint(string calldata image, uint royalty)
+        public
+        returns (uint256)
+    {
         _safeMint(msg.sender, _tokenId);
         _images[_tokenId] = image;
+        _royaltys[_tokenId] = royalty;
         _tokenId++;
         return _tokenId;
     }
@@ -37,6 +41,10 @@ contract ThreeDX is Ownable, ERC721, ERC721Enumerable {
         if (bytes(image).length == 0) {
             return "";
         }
+        uint256 royalty = _royaltys[tokenId];
+        if (royalty == 0) {
+            return "";
+        }
         string memory json = Base64.encode(
             bytes(
                 string(
@@ -45,7 +53,9 @@ contract ThreeDX is Ownable, ERC721, ERC721Enumerable {
                         Strings.toString(tokenId),
                         '","description":"generate by 3dx","image":"ipfs://',
                         image,
-                        '","model":"xxx"}'
+                        '", "royalty":',
+                        Strings.toString(royalty),
+                        ',"model":"xxx"}'
                     )
                 )
             )
