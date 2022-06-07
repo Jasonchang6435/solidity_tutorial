@@ -14,19 +14,17 @@ contract ThreeDX is Ownable, ERC721, ERC721Enumerable {
 
     uint256 private _tokenId = 1;
 
-    mapping(uint256 => string) private _images; //Ipfs address
-
-    mapping(uint256 => uint256) private _royaltys; //_royalty
+    mapping(uint256 => string) private _metadata; //Ipfs address
 
     constructor() ERC721("ThreeDX", "3DX") ERC721Enumerable() Ownable() {}
 
-    function mint(string calldata image, uint royalty)
-        public
-        returns (uint256)
-    {
+    function getTokenId() public view returns (uint256) {
+        return _tokenId;
+    }
+
+    function mint(string calldata metadata) public returns (uint256) {
         _safeMint(msg.sender, _tokenId);
-        _images[_tokenId] = image;
-        _royaltys[_tokenId] = royalty;
+        _metadata[_tokenId] = metadata;
         _tokenId++;
         return _tokenId;
     }
@@ -37,33 +35,7 @@ contract ThreeDX is Ownable, ERC721, ERC721Enumerable {
         override
         returns (string memory)
     {
-        string memory image = _images[tokenId];
-        if (bytes(image).length == 0) {
-            return "";
-        }
-        uint256 royalty = _royaltys[tokenId];
-        if (royalty == 0) {
-            return "";
-        }
-        string memory json = Base64.encode(
-            bytes(
-                string(
-                    abi.encodePacked(
-                        '{"name":"3dx #',
-                        Strings.toString(tokenId),
-                        '","description":"generate by 3dx","image":"ipfs://',
-                        image,
-                        '", "royalty":',
-                        Strings.toString(royalty),
-                        ',"model":"xxx"}'
-                    )
-                )
-            )
-        );
-        string memory output = string(
-            abi.encodePacked("data:application/json;base64,", json)
-        );
-        return output;
+        return _metadata[tokenId];
     }
 
     function _beforeTokenTransfer(
