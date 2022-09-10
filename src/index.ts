@@ -19,7 +19,13 @@ const threeDXContact = new ethers.Contract(
 ).connect(wallet);
 
 export async function mint(image: string): Promise<string> {
-  const tx = await threeDXContact.mint(image);
+  const gasPrice = await provider.getGasPrice()
+  const maxFeePerGas = gasPrice.mul(2)
+  const maxPriorityFeePerGas = gasPrice
+  const tx = await threeDXContact.mint(image,{
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+  });
   tx.wait();
 
   console.log("Mint txHash:", tx.hash);
@@ -29,7 +35,6 @@ export async function mint(image: string): Promise<string> {
 }
 
 async function main(): Promise<void> {
-  await mint("QmVrvZ3fmSiYVoAvuDvp45fqjMaW4htYHa1LFFkexxP9rU");
-}
+  await mint( "{\"name\":\"696969\",\"image\":\"ipfs://Qmd2BRY1u5b4NWCzUgd94W2ef3HdRAe119CfnbF5ezmVoW\",\"description\":\"LooksWhale Sire!\"}")}
 
 void main();
