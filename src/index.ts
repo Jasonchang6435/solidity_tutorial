@@ -4,14 +4,13 @@ require("dotenv").config();
 
 const iface = new ethers.utils.Interface(threeDXAbi.abi);
 
-const threeDXContractAddress = "0xf17FD11EB21a79E44Aa46F334d590B6a1529eFDa";
+// const threeDXContractAddress = "0xf17FD11EB21a79E44Aa46F334d590B6a1529eFDa";
+const threeDXContractAddress =
+  "0x1e78665ecf76a9de1e4ab90ede0141c7bfdeea791c1704b289b23ab4b854d611";
 export const provider = new ethers.providers.JsonRpcProvider(
   process.env.RINKEYBY_URL
 );
-export const wallet = new ethers.Wallet(
-  process.env.RINKEYBY_PRIVATE_KEY!,
-  provider
-);
+export const wallet = new ethers.Wallet(process.env.GOERLI_PRIVATE_KEY!, provider);
 const threeDXContact = new ethers.Contract(
   threeDXContractAddress,
   threeDXAbi.abi,

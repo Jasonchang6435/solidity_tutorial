@@ -12,6 +12,7 @@
     "compile": "npx hardhat compile",
     "deploy": "yarn deploy:localhost",
     "deploy:localhost": "npx hardhat run scripts/deploy.ts --network localhost",
+    "deploy_goerli": "npx hardhat run scripts/deploy.ts --network goerli",
     "deploy_rinkeby": "npx hardhat run scripts/deploy.ts --network rinkeby",
     "deploy_eth": "npx hardhat run scripts/deploy.ts --network ethereum",
     "fix:lint": "eslint --fix",

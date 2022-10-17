@@ -31,11 +31,23 @@ export default {
     },
     rinkeby: {
       url: process.env.RINKEYBY_URL || "",
-      accounts: process.env.RINKEYBY_PRIVATE_KEY !== undefined ? [process.env.RINKEYBY_PRIVATE_KEY] : [],
+      accounts:
+        process.env.RINKEYBY_PRIVATE_KEY !== undefined
+          ? [process.env.RINKEYBY_PRIVATE_KEY]
+          : [],
     },
     ethereum: {
       url: process.env.ETHEREUM_URL || "",
-      accounts: process.env.ETHEREUM_PRIVATE_KEY !== undefined ? [process.env.ETHEREUM_PRIVATE_KEY] : [],
+      accounts:
+        process.env.ETHEREUM_PRIVATE_KEY !== undefined
+          ? [process.env.ETHEREUM_PRIVATE_KEY]
+          : [],
+    },
+    goerli: {
+      url: process.env.GOERLI_URL || "",
+      accounts: process.env.GOERLI_PRIVATE_KEY
+        ? [process.env.GOERLI_PRIVATE_KEY]
+        : [],
     },
   },
   gasReporter: {
